@@ -1,0 +1,32 @@
+{
+  "name": "student-management-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Student Management System",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node utils/seed.js",
+    "setup": "node setup.js",
+    "fix-indexes": "node utils/fixIndexes.js"
+  },
+  "keywords": ["student", "management", "mern"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "aws-sdk": "^2.1499.0",
+    "openai": "^4.20.1",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
