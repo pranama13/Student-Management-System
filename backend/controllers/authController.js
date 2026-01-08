@@ -76,12 +76,55 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Email and password are required' });
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
+    const bootstrapEnabled = process.env.BOOTSTRAP_ADMIN_ENABLED === 'true';
+    const bootstrapEmail =
+      (process.env.BOOTSTRAP_ADMIN_EMAIL || 'admin@school.com').toLowerCase().trim();
+    const bootstrapPassword = process.env.BOOTSTRAP_ADMIN_PASSWORD || 'admin123';
+    const isBootstrapAttempt =
+      bootstrapEnabled &&
+      normalizedEmail === bootstrapEmail &&
+      password === bootstrapPassword;
+
     // Find user
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    let user = await User.findOne({ email: normalizedEmail });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      // If DB was reset and bootstrap is enabled, auto-create the admin on first login attempt.
+      if (isBootstrapAttempt) {
+        console.warn(
+          '⚠️  BOOTSTRAP admin login used. Disable BOOTSTRAP_ADMIN_ENABLED after restoring admin access.'
+        );
+        user = await User.create({
+          name: 'Super Admin',
+          email: bootstrapEmail,
+          password: bootstrapPassword,
+          role: 'admin',
+          approvalStatus: 'approved',
+          approvedAt: new Date()
+        });
+      } else {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
     }
 
+    // Bootstrap recovery: allow login with the bootstrap password even if the stored password differs.
+    // This is intentional for "DB reset / locked out" recovery. Disable BOOTSTRAP_ADMIN_ENABLED after use.
+    if (isBootstrapAttempt) {
+      user.role = 'admin';
+      user.approvalStatus = 'approved';
+      user.approvedAt = new Date();
+      user.password = bootstrapPassword; // will be hashed by pre-save hook
+      await user.save();
+    } else {
+      // Normal login: check password
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
+    }
+
+    // Only after password verification: enforce approval checks for normal users
     if (user.approvalStatus && user.approvalStatus !== 'approved') {
       return res.status(403).json({
         message:
@@ -89,12 +132,6 @@ export const login = async (req, res) => {
             ? 'Your account is pending admin approval.'
             : 'Your account has been rejected. Please contact the administrator.'
       });
-    }
-
-    // Check password
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
     const token = generateToken(user._id);

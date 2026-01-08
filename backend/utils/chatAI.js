@@ -67,6 +67,7 @@ const intentPatterns = {
   greeting: ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'greetings'],
   attendance: ['attendance', 'present', 'absent', 'mark attendance', 'check attendance', 'my attendance'],
   exam: ['exam', 'test', 'examination', 'upcoming exam', 'exam schedule', 'exam results', 'grades', 'marks', 'scores', 'test date', 'test schedule', 'examination date', 'when is exam', 'exam timetable'],
+  assignments: ['assignment', 'assignments', 'homework', 'submit', 'submission', 'upload assignment', 'due date', 'deadline', 'past papers', 'materials'],
   subject: ['subject', 'subjects', 'course', 'courses', 'mathematics', 'math', 'maths', 'science', 'physics', 'chemistry', 'biology', 'english', 'language', 'history', 'geography', 'computer', 'informatics'],
   student: ['student', 'my profile', 'student info', 'student information', 'my details'],
   teacher: ['teacher', 'teachers', 'faculty', 'instructor', 'professor'],
@@ -105,7 +106,8 @@ export const calculateMatchScore = (userMessage, entry) => {
   }
   
   // 2. Question contains message or vice versa
-  if (entryQuestion.includes(message) || message.includes(entryQuestion)) {
+  // Avoid accidental substring matches for very short messages like "hi" matching "this".
+  if (message.length >= 4 && (entryQuestion.includes(message) || message.includes(entryQuestion))) {
     score += 50;
   }
   
@@ -182,6 +184,11 @@ export const calculateMatchScore = (userMessage, entry) => {
 
 // Find best matches (returns top N)
 export const findBestMatches = (userMessage, entries, topN = 3) => {
+  // Prevent false positives for very short inputs (e.g. "hi" matching "this").
+  if ((userMessage || '').trim().length < 4) {
+    return [];
+  }
+
   const scored = entries.map(entry => ({
     entry,
     score: calculateMatchScore(userMessage, entry)

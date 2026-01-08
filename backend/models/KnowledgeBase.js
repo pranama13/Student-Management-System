@@ -18,7 +18,7 @@ const knowledgeBaseSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['attendance', 'exams', 'students', 'teachers', 'classes', 'general'],
+    enum: ['attendance', 'exams', 'assignments', 'students', 'teachers', 'classes', 'general'],
     default: 'general'
   },
   createdBy: {

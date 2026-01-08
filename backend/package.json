@@ -11,20 +11,27 @@
     "setup": "node setup.js",
     "fix-indexes": "node utils/fixIndexes.js"
   },
-  "keywords": ["student", "management", "mern"],
+  "keywords": [
+    "student",
+    "management",
+    "mern"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^8.0.3",
-    "dotenv": "^16.3.1",
-    "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "multer": "^1.4.5-lts.1",
+    "@google-cloud/dialogflow": "^7.4.0",
     "aws-sdk": "^2.1499.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.3",
+    "multer": "^1.4.5-lts.1",
     "openai": "^4.20.1",
-    "express-validator": "^7.0.1"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

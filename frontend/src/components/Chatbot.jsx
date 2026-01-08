@@ -113,7 +113,7 @@ const Chatbot = () => {
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white'
               }`}
             >
-              <p className="text-sm">{message.content}</p>
+              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
             </div>
           </div>
         ))}

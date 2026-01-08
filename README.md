@@ -65,12 +65,32 @@ Create a `.env` file in the `backend` directory:
 PORT=5000
 MONGODB_URI=your-mongodb-connection-string
 JWT_SECRET=your-secret-key
+
+# Dialogflow (recommended for chatbot)
+# 1) Create a Dialogflow ES agent in Google Cloud
+# 2) Create a service account JSON key
+# 3) Paste the entire JSON content as a single line here
+DIALOGFLOW_PROJECT_ID=your-gcp-project-id
+DIALOGFLOW_LANGUAGE_CODE=en-US
+DIALOGFLOW_SERVICE_ACCOUNT_JSON={"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n","client_email":"...","client_id":"..."}
+
+# Optional: OpenAI (if you still use it elsewhere)
 OPENAI_API_KEY=your-openai-api-key
+
+# Optional: AWS S3 uploads
 AWS_ACCESS_KEY_ID=your-aws-key
 AWS_SECRET_ACCESS_KEY=your-aws-secret
 AWS_REGION=us-east-1
 AWS_S3_BUCKET_NAME=your-bucket-name
 ```
+
+Tip: this repo also includes `backend/env.example` you can copy into your local `backend/.env`.
+
+### Admin recovery (if MongoDB data is reset)
+If your database is empty and you can’t login, you can temporarily enable a **bootstrap admin** via environment variables (disable it again after you recover access):
+- `BOOTSTRAP_ADMIN_ENABLED=true`
+- `BOOTSTRAP_ADMIN_EMAIL=admin@school.com`
+- `BOOTSTRAP_ADMIN_PASSWORD=admin123`
 
 ### 3. Frontend Setup
 
@@ -112,6 +132,49 @@ npm run dev
 The application will be available at:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:5000
+
+## 🐳 Docker (Frontend + Backend)
+
+This repo includes separate Dockerfiles for each service:
+- `backend/Dockerfile`
+- `frontend/Dockerfile`
+
+And a root `docker-compose.yml` to run both together.
+
+### Run with Docker Compose
+
+1. Ensure you have `backend/.env` configured (MongoDB URI, JWT secret, etc.)
+2. From the project root:
+
+```bash
+docker compose up --build
+```
+
+Then open:
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:5000`
+
+## 🤖 Dialogflow Chatbot Setup (replaces the built-in hardcoded responses)
+
+This project can use **Google Dialogflow ES** for chatbot responses when there is no good Knowledge Base match.
+
+### 1) Create the agent
+- In Google Cloud Console, enable **Dialogflow API**
+- Create a **Dialogflow ES agent** (language should match `DIALOGFLOW_LANGUAGE_CODE`, default `en-US`)
+
+### 2) Create a service account key
+- Google Cloud Console → **IAM & Admin → Service Accounts**
+- Create a service account (give it permissions to use Dialogflow, e.g. “Dialogflow API Client” or a suitable role)
+- Create a **JSON key** and download it
+
+### 3) Configure backend environment variables
+In `backend/.env` (or AWS environment variables), set:
+- `DIALOGFLOW_PROJECT_ID`
+- `DIALOGFLOW_LANGUAGE_CODE` (optional)
+- `DIALOGFLOW_SERVICE_ACCOUNT_JSON` (paste the JSON key contents as a single line)
+
+If Dialogflow is not configured, the backend falls back to the existing default replies.
+
 
 ### Production Mode
 

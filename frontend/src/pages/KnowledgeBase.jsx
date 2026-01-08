@@ -173,6 +173,7 @@ const KnowledgeBase = () => {
           <option value="">All Categories</option>
           <option value="attendance">Attendance</option>
           <option value="exams">Exams</option>
+          <option value="assignments">Assignments</option>
           <option value="students">Students</option>
           <option value="teachers">Teachers</option>
           <option value="classes">Classes</option>
@@ -334,6 +335,7 @@ const KnowledgeBase = () => {
                 <option value="general">General</option>
                 <option value="attendance">Attendance</option>
                 <option value="exams">Exams</option>
+                <option value="assignments">Assignments</option>
                 <option value="students">Students</option>
                 <option value="teachers">Teachers</option>
                 <option value="classes">Classes</option>

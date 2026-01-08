@@ -261,7 +261,56 @@ const seedData = async () => {
         question: 'assignment submission',
         keywords: ['assignment', 'submit assignment', 'how to submit', 'homework submission'],
         answer: 'To submit assignments, go to the Upload Files page. Select your assignment file, choose "Assignment" as the category, add a description if needed, and click Upload. Your teacher will be able to view and grade your submission.',
-        category: 'general',
+        category: 'assignments',
+        createdBy: admin._id
+      },
+      {
+        question: 'where can i see assignments',
+        keywords: ['assignments', 'view assignments', 'where are assignments', 'homework', 'due date'],
+        answer: 'Open the Assignments page from the sidebar. You can search by title, filter by subject, and check due dates (Due Soon/Overdue). Students see assignments for their class; teachers/admins can view more broadly.',
+        category: 'assignments',
+        createdBy: admin._id
+      },
+      {
+        question: 'how to create an assignment',
+        keywords: ['create assignment', 'add assignment', 'new assignment', 'teacher assignment'],
+        answer: 'Teachers and admins can create assignments from the Assignments page. Click “Add Assignment”, fill in title/subject/class (optional), due date, instructions, and max marks. Save to publish it to students.',
+        category: 'assignments',
+        createdBy: admin._id
+      },
+      {
+        question: 'assignment due date and overdue',
+        keywords: ['due date', 'deadline', 'overdue', 'due soon', 'assignment status'],
+        answer: 'Each assignment shows a due date. If the due date is near, it may show “Due Soon”; if past, it shows “Overdue”. If you believe an assignment is incorrectly marked overdue, contact your teacher/admin.',
+        category: 'assignments',
+        createdBy: admin._id
+      },
+      {
+        question: 'how to view upcoming exams in the system',
+        keywords: ['upcoming exams', 'view exams', 'exam list', 'exam schedule', 'upcoming'],
+        answer: 'Open the Exams page from the sidebar. You can view the schedule and filter by subject. Students see exams for their class; teachers/admins can manage exams for multiple classes.',
+        category: 'exams',
+        createdBy: admin._id
+      },
+      {
+        question: 'how to create an exam',
+        keywords: ['create exam', 'add exam', 'new exam', 'schedule exam'],
+        answer: 'Teachers and admins can create exams from the Exams page. Add subject, class (if applicable), exam date, start/end time, and any notes. Save to publish the schedule.',
+        category: 'exams',
+        createdBy: admin._id
+      },
+      {
+        question: 'past papers',
+        keywords: ['past papers', 'previous papers', 'old papers', 'exam papers'],
+        answer: 'Past papers can be attached to an exam (teacher/admin). Open the Exams page, choose an exam, and add a past paper with file name, file URL, and year. Students can then use these for revision.',
+        category: 'exams',
+        createdBy: admin._id
+      },
+      {
+        question: 'classes in this system',
+        keywords: ['classes', 'class', 'grade', 'section', 'class allocation', 'class list'],
+        answer: 'Classes are used to group students and to filter attendance, exams, and assignments. Students are assigned to a class by the administrator. If your class is incorrect, contact your admin/teacher.',
+        category: 'classes',
         createdBy: admin._id
       },
       {
